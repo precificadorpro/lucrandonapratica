@@ -2,4 +2,5 @@ User-agent: *
 Allow: /
 
 # Link para o seu sitemap para facilitar a descoberta
-Sitemap: https://seu-usuario.github.io/seu-repositorio/sitemap.xml
+
+Sitemap: https://precificadorpro.github.io/lucrandonapratica/sitemap.xml
