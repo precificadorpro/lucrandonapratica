@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Precificador Pro | Calculadora de Preço de Venda e Lucro Líquido</title>
     <meta name="description" content="Calcule o preço de venda ideal para seus produtos considerando taxas de marketplace, frete e margem de lucro real. Ferramenta gratuita para vendedores.">
     
@@ -17,10 +16,6 @@
     <meta property="og:url" content="https://precificadorpro.github.io/lucrandonapratica/">
     <meta property="og:image" content="https://v3.apps.pagseguro.uol.com.br/data/images/w15giF17114544616195669644057711229485.png">
 
-    <meta property="og:title" content="Precificador Pro - Calcule seu Lucro">
-    <meta property="og:description" content="Ferramenta gratuita para calcular preço de venda.">
-    <meta property="og:url" content="https://precificadorpro.github.io/lucrandonapratica/">
-    
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,9 +33,16 @@
     </script>
 
     <style>
-        :root { --primary: #2563eb; --success: #059669; --bg: #f8fafc; --danger: #e11d48; --text: #1e293b; }
+        :root { --primary: #2563eb; --success: #059669; --bg: #f8fafc; --danger: #e11d48; --text: #1e293b; --dark: #0f172a; }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); margin: 0; display: flex; flex-direction: column; min-height: 100vh; align-items: center; }
         
+        /* ESTILOS DO MENU */
+        .navbar { width: 100%; background: var(--dark); padding: 10px 0; position: sticky; top: 0; z-index: 1001; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .nav-container { max-width: 1000px; margin: 0 auto; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        .nav-link { color: white; text-decoration: none; font-size: 13px; font-weight: 500; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: background 0.3s; }
+        .nav-link:hover { background: var(--primary); }
+        .nav-link.active-blog { background: #f59e0b; color: #000; }
+
         .container { flex: 1; display: flex; justify-content: center; align-items: center; padding: 20px; width: 100%; max-width: 500px; box-sizing: border-box; }
         .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); width: 100%; }
         
@@ -54,13 +56,11 @@
         button { width: 100%; padding: 14px; background-color: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 10px; }
         button:hover { background-color: #1d4ed8; }
 
-        /* BANNER */
-       .banner-container { margin: 25px 0; text-align: center; border-top: 1px dashed #cbd5e1; padding-top: 20px; }
+        .banner-container { margin: 25px 0; text-align: center; border-top: 1px dashed #cbd5e1; padding-top: 20px; }
         .banner-container img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: transform 0.2s; }
         .banner-container img:hover { transform: scale(1.02); }
         .ad-label { display: block; font-size: 10px; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; }
 
-        /* RESULTADOS */
         .result { padding: 20px; background-color: #f1f5f9; border-radius: 8px; display: none; margin-top: 20px; }
         .main-price { text-align: center; border-bottom: 2px solid #e2e8f0; margin-bottom: 15px; padding-bottom: 10px; }
         .main-price h3 { margin: 5px 0; color: #334155; font-size: 32px; }
@@ -70,23 +70,41 @@
         .profit-text { color: var(--success); }
         .tax-text { color: var(--danger); } 
 
-        /* FOOTER */
         footer { width: 100%; padding: 20px; text-align: center; font-size: 13px; color: #64748b; }
         footer a { color: var(--primary); text-decoration: none; margin: 0 8px; cursor: pointer; }
 
-        /* MODAL (POP-UP) STYLES */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); backdrop-filter: blur(4px); }
-        .modal-content { background-color: white; margin: 10% auto; padding: 30px; border-radius: 12px; width: 90%; max-width: 600px; position: relative; max-height: 70vh; overflow-y: auto; }
-        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 28px; cursor: pointer; color: #64748b; }
-        .modal h2 { text-align: left; border-bottom: 2px solid var(--bg); padding-bottom: 10px; }
+        /* AJUSTE FINO MODAL MOBILE */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); align-items: center; justify-content: center; }
+        .modal-content { background-color: white; margin: auto; padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; position: relative; max-height: 85vh; overflow-y: auto; box-sizing: border-box; }
+        .close-btn { position: sticky; float: right; top: 0; right: 0; font-size: 28px; cursor: pointer; color: #64748b; z-index: 10; line-height: 1; }
+        .modal h2 { text-align: left; border-bottom: 2px solid var(--bg); padding-bottom: 10px; font-size: 20px; margin-top: 0; }
+        
+        .modal input { margin-bottom: 12px; width: 100%; padding: 12px; font-size: 16px; box-sizing: border-box; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .modal .res-calc { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 15px; font-weight: bold; color: var(--primary); text-align: center; }
+
+        .article-list { list-style: none; padding: 0; }
+        .article-item { padding: 15px; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.2s; }
+        .article-item:hover { background: #f8fafc; }
+        .article-item h3 { margin: 0 0 5px 0; font-size: 16px; color: var(--primary); }
+        .article-item p { margin: 0; font-size: 13px; color: #64748b; }
+        .btn-back { display: inline-block; margin-bottom: 15px; font-size: 13px; color: var(--primary); cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
+<nav class="navbar">
+    <div class="nav-container">
+        <a class="nav-link" onclick="location.reload()">Precificador</a>
+        <a class="nav-link" onclick="openModal('juros')">Juros</a>
+        <a class="nav-link" onclick="openModal('pontoEquilibrio')">Ponto Equilíbrio</a>
+        <a class="nav-link" onclick="openModal('desconto')">Calculadora de Desconto</a>
+        <a class="nav-link active-blog" onclick="openModal('artigos')">📚 Artigos</a>
+    </div>
+</nav>
+
 <div class="container">
     <div class="card">
         <h1 style="font-size: 24px; text-align: center; color: var(--primary); margin-bottom: 25px;">Precificador Pro</h1>
-        
         <div class="input-grid">
             <div class="input-group full-width">
                 <label for="custo">Custo do Produto (R$)</label>
@@ -109,16 +127,13 @@
                 <input type="number" id="taxaMkt" placeholder="Ex: 18%" step="0.1">
             </div>
         </div>
-
         <button onclick="calcular()">Calcular Agora</button>
-
         <div class="banner-container">
             <span class="ad-label">Publicidade</span>
             <a href="https://pagbank.vc/indica-maquininhas-a0df36b5b" target="_blank" rel="noopener">
                 <img src="https://v3.apps.pagseguro.uol.com.br/data/images/w15giF17114544616195669644057711229485.png" alt="Anúncio Máquina de Cartão PagBank">
             </a>
         </div>
-
         <div id="resultado" class="result">
             <div class="main-price">
                 <span class="stat-label">Preço Sugerido de Venda</span>
@@ -128,7 +143,6 @@
                 <span class="stat-label">Lucro Líquido Real</span>
                 <span id="lucroDinheiro" class="stat-value profit-text">R$ 0,00</span>
             </div>
-            
             <div class="stat-box" style="border-left-color: var(--danger);">
                 <span class="stat-label">Total de Impostos (R$)</span>
                 <span id="totalImpostoReal" class="stat-value tax-text">R$ 0,00</span>
@@ -137,7 +151,6 @@
                 <span class="stat-label">Comissão / Taxa</span>
                 <span id="totalTaxaMktReal" class="stat-value tax-text">R$ 0,00</span>
             </div>
-
             <div class="stat-box">
                 <span class="stat-label">Custos Físicos</span>
                 <span id="totalCustosFisicos" class="stat-value">R$ 0,00</span>
@@ -146,61 +159,90 @@
     </div>
 </div>
 
-<div id="modalContainer" class="modal" onclick="closeAllModals(event)">
+<div id="modalContainer" class="modal" onclick="closeAllModals()">
     <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeAllModals()">&times;</span>
         <div id="modalBody"></div>
     </div>
 </div>
-<section style="max-width: 800px; margin: 40px auto; padding: 20px; color: #334155; line-height: 1.8;">
-    <h2 style="color: var(--primary);">Entenda o Cálculo de Preço de Venda e Lucro Líquido</h2>
-    
-    <p>Calcular o <strong>preço de venda</strong> de forma correta é o que diferencia empresas lucrativas daquelas que operam no prejuízo. Muitos empreendedores cometem o erro de apenas somar uma porcentagem ao custo, esquecendo que as taxas incidem sobre o valor final de venda.</p>
 
-    <div style="background: #e2e8f0; padding: 20px; border-radius: 8px; margin: 20px 0;">
-        <h3 style="margin-top: 0;">O que é Preço de Venda?</h3>
-        <p>É o valor que seu cliente paga pelo produto. Ele deve ser suficiente para cobrir:</p>
-        <ul>
-            <li><strong>Custos de Aquisição:</strong> O valor pago ao fornecedor.</li>
-            <li><strong>Despesas Variáveis:</strong> Impostos, comissões de marketplaces e taxas de cartão.</li>
-            <li><strong>Custos Fixos:</strong> Uma parcela do seu aluguel, internet e salários.</li>
-            <li><strong>Margem de Lucro:</strong> O valor que sobra para a empresa reinvestir ou distribuir.</li>
-        </ul>
-    </div>
-
-    
-
-    <h3 style="color: var(--primary);">Diferença entre Lucro Bruto e Lucro Líquido</h3>
-    <p>Muitas pessoas se confundem aqui:</p>
-    <ul>
-        <li><strong>Lucro Bruto:</strong> É a diferença entre o preço de venda e o custo direto do produto.</li>
-        <li><strong>Lucro Líquido:</strong> É o que realmente sobra no seu bolso após pagar <strong>todas</strong> as despesas (impostos, taxas, fretes e custos fixos). Nossa calculadora foca no lucro líquido real.</li>
-    </ul>
-
-    <h3 style="color: var(--primary);">A importância do Markup Divisor</h3>
-    <p>O <em>Precificador Pro</em> utiliza a lógica do <strong>Markup Divisor</strong>. Diferente de somar 20% ao custo (o que resultaria em um lucro real menor), este método garante que, mesmo após as taxas serem descontadas do preço final, sua margem de lucro permaneça intacta.</p>
-</section>
 <footer>
-    <p>&copy; 2026 Precificador Pro - A melhor calculadora de preço de venda</p>
+    <p>&copy; 2026 Precificador Pro - O guia do lojista lucrativo</p>
     <a onclick="openModal('sobre')">Sobre</a> | 
     <a onclick="openModal('privacidade')">Privacidade</a> | 
-    <a onclick="openModal('termos')">Termos de Uso</a>
+    <a onclick="openModal('termos')">Termos</a>
 </footer>
 
 <script>
+    const artigosFinancas = {
+        markup: { titulo: "Markup vs Margem", conteúdo: "<p>O Markup é um índice aplicado sobre o custo para chegar ao preço de venda. Já a Margem é o percentual de lucro sobre o preço final. Vender com 30% de Markup não é o mesmo que ter 30% de Margem Líquida. Cuidado!</p>" },
+        caixa: { titulo: "Capital de Giro", conteúdo: "<p>É o dinheiro necessário para pagar seus fornecedores antes de receber das vendas parceladas. Sem ele, mesmo vendendo muito, sua empresa pode quebrar por falta de liquidez.</p>" },
+        frete: { titulo: "O custo do Frete Grátis", conteúdo: "<p>No marketplace, o 'Frete Grátis' é pago por você. Se não embutir esse valor no custo fixo do produto antes de calcular a margem, sua lucratividade pode ser negativa.</p>" },
+        metas: { titulo: "Como definir metas de venda", conteúdo: "<p>Calcule seu custo fixo total (aluguel, luz, salários) e divida pela sua margem de contribuição média. Isso revelará quanto você precisa vender apenas para não ficar no prejuízo.</p>" }
+    };
+
     const contents = {
-        sobre: `<h2>Sobre o Precificador Pro</h2><p>O Precificador Pro é uma ferramenta essencial para vendedores de marketplaces (Mercado Livre, Shopee, Amazon). Utilizamos a fórmula de <strong>Markup Divisor</strong> para garantir que suas taxas não consumam seu lucro líquido.</p>`,
-        privacidade: `<h2>Privacidade</h2><p>Não coletamos dados. Seus cálculos são processados apenas no seu navegador. Este site pode exibir anúncios através de parceiros como o Google AdSense.</p>`,
-        termos: `<h2>Termos de Uso</h2><p>Esta ferramenta é um simulador de preços de venda. Os resultados podem variar conforme arredondamentos fiscais.</p>`
+        sobre: `<h2>Sobre o Precificador Pro</h2><p>Criado para simplificar a vida do microempreendedor brasileiro. Nossa missão é evitar que você perda dinheiro por erros de cálculo.</p>`,
+        privacidade: `<h2>Privacidade</h2><p>Privacidade total: seus cálculos são processados apenas no seu navegador. Nada é salvo em nossos servidores.</p>`,
+        termos: `<h2>Termos</h2><p>Os cálculos são estimativas baseadas nos dados inseridos.</p>`,
+        artigos: `<h2>Educação Financeira</h2>
+                  <div class="article-list">
+                    <div class="article-item" onclick="lerArtigo('markup')"><h3>Markup vs Margem</h3><p>Entenda a diferença crucial para não ter prejuízo.</p></div>
+                    <div class="article-item" onclick="lerArtigo('caixa')"><h3>Capital de Giro</h3><p>O oxigênio do seu negócio.</p></div>
+                    <div class="article-item" onclick="lerArtigo('frete')"><h3>Frete Grátis</h3><p>Como oferecer sem perder dinheiro.</p></div>
+                    <div class="article-item" onclick="lerArtigo('metas')"><h3>Metas Reais</h3><p>Como planejar seu faturamento mensal.</p></div>
+                  </div>`,
+        juros: `<h2>Juros Compostos</h2>
+                <label>Capital (R$)</label><input type="number" id="cap" placeholder="Ex: 1000">
+                <label>Taxa Mensal (%)</label><input type="number" id="taxJ" placeholder="Ex: 2">
+                <label>Meses</label><input type="number" id="temp" placeholder="Ex: 12">
+                <button onclick="calcJuros()">Calcular</button>
+                <div id="resJ" class="res-calc"></div>`,
+        pontoEquilibrio: `<h2>Ponto de Equilíbrio</h2>
+                <label>Custo Fixo Mensal (R$)</label><input type="number" id="cfP" placeholder="Aluguel, luz, etc">
+                <label>Margem de Contribuição (%)</label><input type="number" id="mcP" placeholder="Sobra após custos variados">
+                <button onclick="calcPonto()">Calcular Faturamento Mínimo</button>
+                <div id="resP" class="res-calc"></div>`,
+        desconto: `<h2>Calculadora de Desconto</h2>
+                <label>Preço Atual (R$)</label><input type="number" id="pOrig" placeholder="Ex: 100">
+                <label>Desconto (%)</label><input type="number" id="pDesc" placeholder="Ex: 10">
+                <button onclick="calcDesconto()">Calcular Novo Preço</button>
+                <div id="resD" class="res-calc"></div>`
     };
 
     function openModal(type) {
         document.getElementById('modalBody').innerHTML = contents[type];
-        document.getElementById('modalContainer').style.display = 'block';
+        document.getElementById('modalContainer').style.display = 'flex'; // Usando Flex para centralizar
     }
 
-    function closeAllModals(e) {
+    function closeAllModals() {
         document.getElementById('modalContainer').style.display = 'none';
+    }
+
+    function lerArtigo(id) {
+        const artigo = artigosFinancas[id];
+        document.getElementById('modalBody').innerHTML = `<div class="btn-back" onclick="openModal('artigos')">← Voltar</div><h2>${artigo.titulo}</h2>${artigo.conteúdo}`;
+    }
+
+    function calcJuros() {
+        const c = parseFloat(document.getElementById('cap').value);
+        const i = parseFloat(document.getElementById('taxJ').value) / 100;
+        const t = parseFloat(document.getElementById('temp').value);
+        const m = c * Math.pow((1 + i), t);
+        document.getElementById('resJ').innerText = "Montante: " + m.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+    }
+
+    function calcPonto() {
+        const cf = parseFloat(document.getElementById('cfP').value);
+        const mc = parseFloat(document.getElementById('mcP').value) / 100;
+        document.getElementById('resP').innerText = "Venda Mínima: " + (cf / mc).toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+    }
+
+    function calcDesconto() {
+        const p = parseFloat(document.getElementById('pOrig').value);
+        const d = parseFloat(document.getElementById('pDesc').value) / 100;
+        const total = p * (1 - d);
+        document.getElementById('resD').innerText = "Preço com Desconto: " + total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
     }
 
     function calcular() {
@@ -209,37 +251,21 @@
         const pLucro = parseFloat(document.getElementById('lucroPerc').value) || 0;
         const pImposto = parseFloat(document.getElementById('impostos').value) || 0;
         const pTaxa = parseFloat(document.getElementById('taxaMkt').value) || 0;
-
         const somaPorcentagens = (pLucro + pImposto + pTaxa) / 100;
 
-        if (somaPorcentagens >= 1) {
-            alert("A soma das taxas não pode ser 100% ou mais.");
-            return;
-        }
+        if (somaPorcentagens >= 1) { alert("A soma das taxas e lucro não pode ser 100% ou mais."); return; }
 
         const precoVenda = (custoProd + frete) / (1 - somaPorcentagens);
-        
-        const valorLucro = precoVenda * (pLucro / 100);
-        const valorImposto = precoVenda * (pImposto / 100);
-        const valorTaxaMkt = precoVenda * (pTaxa / 100);
-        const custosFisicos = custoProd + frete;
-
         const formatar = (v) => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
+        
         document.getElementById('resultado').style.display = 'block';
         document.getElementById('precoFinal').innerText = formatar(precoVenda);
-        document.getElementById('lucroDinheiro').innerText = formatar(valorLucro);
-        document.getElementById('totalImpostoReal').innerText = formatar(valorImposto);
-        document.getElementById('totalTaxaMktReal').innerText = formatar(valorTaxaMkt);
-        document.getElementById('totalCustosFisicos').innerText = formatar(custosFisicos);
-        
+        document.getElementById('lucroDinheiro').innerText = formatar(precoVenda * (pLucro / 100));
+        document.getElementById('totalImpostoReal').innerText = formatar(precoVenda * (pImposto / 100));
+        document.getElementById('totalTaxaMktReal').innerText = formatar(precoVenda * (pTaxa / 100));
+        document.getElementById('totalCustosFisicos').innerText = formatar(custoProd + frete);
         document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
 </script>
-
 </body>
-
 </html>
-
-
-
